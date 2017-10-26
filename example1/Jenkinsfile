@@ -41,7 +41,7 @@ pipeline {
    }
    stage('Release'){
        steps{
-         sh "upload apk file"
+         sh "echo upload apk file"
        }
    }
    }
