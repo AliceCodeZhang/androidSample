@@ -1,0 +1,48 @@
+pipeline {
+   
+   agent{
+       label 'mac'
+   }
+   stages{
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      steps{
+      git 'https://github.com/AliceCodeZhang/androidSample.git'
+      }
+   }
+   stage('Clean'){
+       steps{
+         sh "pwd;cd ./example1;./gradlew clean"
+       }
+   }
+   stage('Build and Install App') {
+      // Run the maven build
+        steps{
+         sh "source ~/.bashrc"
+         sh "pwd;cd ./example1;./gradlew assembleDebug installDebug"
+        } 
+      }
+    stage('Build and Install Test') {
+        steps{
+        sh"pwd;cd ./example1;./gradlew assembleDebugAndroidTest installDebugAndroidTest"   
+        }
+    }
+    stage("Test"){
+        steps{
+         sh "source ~/.bashrc;adb shell am instrument -w -r   -e debug false -e class com.application.example1.ExampleInstrumentedTest com.application.example1.test/android.support.test.runner.AndroidJUnitRunner > testresult.txt"
+        }
+    }
+   stage('Results') {
+      steps{
+         sh "echo 1"
+         archive '**/app/build/outputs/apk/*.apk'
+  
+      }
+   }
+   stage('Release'){
+       steps{
+         sh "upload apk file"
+       }
+   }
+   }
+}
