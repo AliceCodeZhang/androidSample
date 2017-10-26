@@ -77,7 +77,7 @@ public class ExampleInstrumentedTest {
         device.findObject(By.res("com.application.example1:id/email_sign_in_button")).click();
         SystemClock.sleep(1000);
         //click ok
-        device.findObject(By.res("com.application.example1:id/button3")).click();
+        device.findObject(By.res("com.application.example1:id/button2")).click();
         SystemClock.sleep(1000);
 
     }
